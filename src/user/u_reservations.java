@@ -102,7 +102,7 @@ public class u_reservations extends javax.swing.JFrame {
         jLabel3.setText("Date & Time:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 110, 90, 30));
 
-        catering.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Standard", "Premium", "Deluxe" }));
+        catering.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Standard", "Premium" }));
         jPanel1.add(catering, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 180, 200, -1));
 
         jLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N

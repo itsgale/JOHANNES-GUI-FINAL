@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 22, 2025 at 07:52 PM
+-- Generation Time: May 22, 2025 at 11:13 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -37,18 +37,6 @@ CREATE TABLE `cateringp` (
   `u_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `cateringp`
---
-
-INSERT INTO `cateringp` (`package_id`, `package_name`, `description`, `price`, `created_at`, `updated_at`, `u_id`) VALUES
-(5, 'Otin', 'hahahays', 0.00, '2025-05-22 16:04:12', '2025-05-22 16:04:12', 0),
-(6, 'otindako', 'ksajfuhfasn', 1200.00, '2025-05-22 16:08:19', '2025-05-22 16:08:19', 0),
-(7, 'eqwew', 'asdasd', 12.00, '2025-05-22 16:17:45', '2025-05-22 16:17:45', 0),
-(8, 'safa', 'asdas', 1233.00, '2025-05-22 16:20:39', '2025-05-22 16:20:39', 0),
-(9, 'akjsdakn', 'ajkdnasdj', 12334.00, '2025-05-22 16:21:20', '2025-05-22 16:21:20', 0),
-(11, 'asda', 'asdasd', 123123.00, '2025-05-22 16:29:07', '2025-05-22 16:29:07', 0);
-
 -- --------------------------------------------------------
 
 --
@@ -68,81 +56,6 @@ CREATE TABLE `tbl_logs` (
 --
 
 INSERT INTO `tbl_logs` (`log_id`, `u_id`, `u_username`, `action_time`, `log_action`) VALUES
-(524, 72, 'gale', '2025-05-17 19:55:21', 'Registered for the first time'),
-(525, 73, 'qwe', '2025-05-17 19:55:50', 'Registered for the first time'),
-(526, 72, 'gale', '2025-05-17 19:56:00', 'Logged as Admin'),
-(527, 72, 'gale', '2025-05-17 19:56:19', 'Admin Updated Account: qwe'),
-(528, 72, 'gale', '2025-05-17 19:56:22', 'Logged Out'),
-(529, 73, 'qwe', '2025-05-17 19:56:26', 'Logged as User'),
-(530, 73, 'qwe', '2025-05-17 19:56:47', 'User Changed Their Details'),
-(531, 73, 'qwe', '2025-05-17 19:57:12', 'Logged Out'),
-(532, 73, 'qwe', '2025-05-17 19:57:25', 'Forgot, and changed their password'),
-(534, 73, 'qwe', '2025-05-17 19:57:51', 'Forgot, and changed their password'),
-(535, 73, 'qwe', '2025-05-17 19:57:54', 'Logged as User'),
-(536, 73, 'qwe', '2025-05-17 19:58:01', 'Logged Out'),
-(537, 72, 'gale', '2025-05-17 19:58:05', 'Logged as Admin'),
-(538, 72, 'gale', '2025-05-17 19:58:20', 'User Changed Their Details'),
-(539, 72, 'gale', '2025-05-17 19:58:22', 'Logged Out'),
-(540, 73, 'qwe', '2025-05-17 20:02:50', 'Logged as User'),
-(541, 73, 'qwe', '2025-05-17 20:02:52', 'Logged Out'),
-(542, 73, 'qwe', '2025-05-17 20:59:46', 'Logged as User'),
-(543, 73, 'qwe', '2025-05-17 20:59:52', 'Logged Out'),
-(544, 73, 'qwe', '2025-05-17 21:02:30', 'Logged as User'),
-(545, 73, 'qwe', '2025-05-17 21:02:32', 'Logged Out'),
-(546, 72, 'gale', '2025-05-17 21:02:36', 'Logged as Admin'),
-(547, 72, 'gale', '2025-05-17 21:02:39', 'Logged Out'),
-(548, 72, 'gale', '2025-05-18 09:04:29', 'Logged as Admin'),
-(549, 72, 'gale', '2025-05-18 09:04:32', 'Logged Out'),
-(550, 73, 'qwe', '2025-05-18 09:04:35', 'Logged as User'),
-(551, 73, 'qwe', '2025-05-18 09:04:38', 'Logged Out'),
-(552, 72, 'gale', '2025-05-18 09:34:44', 'Logged as Admin'),
-(553, 72, 'gale', '2025-05-18 09:35:07', 'Logged Out'),
-(554, 72, 'gale', '2025-05-18 09:35:47', 'Logged as Admin'),
-(555, 72, 'gale', '2025-05-18 09:38:40', 'Logged as Admin'),
-(556, 72, 'gale', '2025-05-18 09:56:44', 'Logged as Admin'),
-(557, 72, 'gale', '2025-05-18 09:57:03', 'Logged Out'),
-(558, 73, 'qwe', '2025-05-18 09:57:08', 'Logged as User'),
-(559, 72, 'gale', '2025-05-18 09:59:57', 'Logged as Admin'),
-(560, 72, 'gale', '2025-05-18 10:48:38', 'Logged as Admin'),
-(561, 72, 'gale', '2025-05-18 10:49:24', 'Logged as Admin'),
-(562, 72, 'gale', '2025-05-18 10:56:22', 'Logged as Admin'),
-(563, 72, 'gale', '2025-05-18 10:58:20', 'Logged as Admin'),
-(564, 73, 'qwe', '2025-05-18 10:59:36', 'Logged as User'),
-(565, 73, 'qwe', '2025-05-18 10:59:39', 'Logged Out'),
-(566, 73, 'qwe', '2025-05-18 11:05:53', 'Logged as User'),
-(567, 73, 'qwe', '2025-05-18 11:23:02', 'Logged as User'),
-(568, 73, 'qwe', '2025-05-18 11:27:17', 'Logged as User'),
-(569, 73, 'qwe', '2025-05-18 11:27:47', 'Logged as User'),
-(570, 73, 'qwe', '2025-05-18 11:28:31', 'Logged as User'),
-(571, 73, 'qwe', '2025-05-18 11:30:30', 'Logged as User'),
-(572, 73, 'qwe', '2025-05-18 11:54:30', 'Logged as User'),
-(573, 73, 'qwe', '2025-05-18 11:54:49', 'Logged Out'),
-(574, 72, 'gale', '2025-05-18 11:54:54', 'Logged as Admin'),
-(575, 73, 'qwe', '2025-05-18 12:19:13', 'Logged as User'),
-(576, 73, 'qwe', '2025-05-18 12:21:26', 'Logged as User'),
-(577, 72, 'gale', '2025-05-18 12:22:01', 'Logged as Admin'),
-(579, 72, 'gale', '2025-05-18 14:14:48', 'Logged as Admin'),
-(580, 72, 'gale', '2025-05-18 14:14:59', 'Admin Updated Account: hey'),
-(581, 72, 'gale', '2025-05-18 14:15:03', 'Logged Out'),
-(596, 72, 'gale', '2025-05-18 15:11:05', 'Logged as Admin'),
-(597, 72, 'gale', '2025-05-18 15:11:07', 'Logged Out'),
-(598, 73, 'qwe', '2025-05-18 15:11:09', 'Logged as User'),
-(599, 73, 'qwe', '2025-05-18 15:11:11', 'Logged Out'),
-(600, 72, 'gale', '2025-05-18 15:49:27', 'Logged as Admin'),
-(601, 72, 'gale', '2025-05-18 15:51:52', 'Logged Out'),
-(602, 73, 'qwe', '2025-05-18 15:53:55', 'Logged as User'),
-(603, 73, 'qwe', '2025-05-18 15:54:53', 'Logged Out'),
-(604, 72, 'gale', '2025-05-18 15:54:58', 'Logged as Admin'),
-(605, 73, 'qwe', '2025-05-18 16:14:19', 'Logged as User'),
-(606, 73, 'qwe', '2025-05-18 16:14:37', 'Logged Out'),
-(607, 72, 'gale', '2025-05-18 16:15:04', 'Logged as Admin'),
-(608, 73, 'qwe', '2025-05-18 16:46:50', 'Logged as User'),
-(609, 73, 'qwe', '2025-05-18 18:04:23', 'Logged as User'),
-(610, 73, 'qwe', '2025-05-18 18:06:55', 'Logged as User'),
-(611, 73, 'qwe', '2025-05-18 18:08:37', 'Logged as User'),
-(612, 73, 'qwe', '2025-05-18 18:10:20', 'Logged as User'),
-(613, 73, 'qwe', '2025-05-18 18:12:21', 'Logged as User'),
-(614, 72, 'gale', '2025-05-18 18:14:25', 'Logged as Admin'),
 (615, 72, 'gale', '2025-05-18 18:14:29', 'Logged Out'),
 (616, 73, 'qwe', '2025-05-18 18:14:32', 'Logged as User'),
 (617, 73, 'qwe', '2025-05-18 18:15:53', 'Logged as User'),
@@ -237,8 +150,43 @@ INSERT INTO `tbl_logs` (`log_id`, `u_id`, `u_username`, `action_time`, `log_acti
 (706, 73, 'qwe', '2025-05-22 17:38:27', 'Logged as User'),
 (707, 73, 'qwe', '2025-05-22 17:38:44', 'Logged as User'),
 (708, 73, 'qwe', '2025-05-22 17:43:26', 'Logged as User'),
-(709, 81, 'adolf123', '2025-05-22 17:51:13', 'Registered for the first time'),
-(710, 81, 'adolf123', '2025-05-22 17:51:39', 'Logged as Admin');
+(711, 73, 'qwe', '2025-05-22 19:33:31', 'Forgot, and changed their password'),
+(712, 73, 'qwe', '2025-05-22 19:33:33', 'Logged as User'),
+(713, 73, 'qwe', '2025-05-22 19:34:51', 'Logged Out'),
+(714, 72, 'gale', '2025-05-22 19:35:29', 'Forgot, and changed their password'),
+(715, 72, 'gale', '2025-05-22 19:35:33', 'Logged as Admin'),
+(716, 72, 'gale', '2025-05-22 19:39:47', 'Logged Out'),
+(717, 73, 'qwe', '2025-05-22 19:40:04', 'Logged as User'),
+(718, 73, 'qwe', '2025-05-22 19:42:03', 'Logged Out'),
+(719, 72, 'gale', '2025-05-22 19:42:07', 'Logged as Admin'),
+(720, 72, 'gale', '2025-05-22 19:42:33', 'Logged Out'),
+(721, 73, 'qwe', '2025-05-22 19:42:37', 'Logged as User'),
+(722, 73, 'qwe', '2025-05-22 19:43:54', 'Logged Out'),
+(723, 73, 'qwe', '2025-05-22 19:44:03', 'Logged as User'),
+(724, 73, 'qwe', '2025-05-22 19:44:22', 'Logged Out'),
+(725, 72, 'gale', '2025-05-22 19:47:13', 'Logged as Admin'),
+(726, 72, 'gale', '2025-05-22 19:47:43', 'Logged Out'),
+(727, 73, 'qwe', '2025-05-22 19:47:49', 'Logged as User'),
+(728, 73, 'qwe', '2025-05-22 19:49:26', 'Logged Out'),
+(729, 72, 'gale', '2025-05-22 19:49:29', 'Logged as Admin'),
+(730, 72, 'gale', '2025-05-22 19:52:45', 'Logged Out'),
+(731, 73, 'qwe', '2025-05-22 19:52:49', 'Logged as User'),
+(732, 73, 'qwe', '2025-05-22 19:53:00', 'Logged Out'),
+(733, 72, 'gale', '2025-05-22 19:53:22', 'Logged as Admin'),
+(734, 72, 'gale', '2025-05-22 19:59:43', 'Logged Out'),
+(735, 73, 'qwe', '2025-05-22 19:59:46', 'Logged as User'),
+(736, 73, 'qwe', '2025-05-22 20:01:17', 'Logged Out'),
+(738, 72, 'gale', '2025-05-22 20:05:09', 'Logged as Admin'),
+(739, 72, 'gale', '2025-05-22 20:05:19', 'Admin Updated Account: mike'),
+(740, 72, 'gale', '2025-05-22 20:05:21', 'Logged Out'),
+(747, 72, 'gale', '2025-05-22 20:12:38', 'Logged as Admin'),
+(753, 72, 'gale', '2025-05-22 20:29:13', 'Logged as Admin'),
+(754, 72, 'gale', '2025-05-22 20:32:17', 'Logged Out'),
+(755, 73, 'qwe', '2025-05-22 20:32:24', 'Logged as User'),
+(756, 73, 'qwe', '2025-05-22 20:39:11', 'Logged Out'),
+(757, 72, 'gale', '2025-05-22 20:39:16', 'Logged as Admin'),
+(758, 72, 'gale', '2025-05-22 20:41:23', 'Logged Out'),
+(759, 73, 'qwe', '2025-05-22 20:41:27', 'Logged as User');
 
 -- --------------------------------------------------------
 
@@ -257,14 +205,6 @@ CREATE TABLE `tbl_reservations` (
   `status` varchar(20) NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_reservations`
---
-
-INSERT INTO `tbl_reservations` (`reservation_id`, `u_id`, `reservation_date`, `catering_package`, `number_of_guests`, `special_requests`, `created_at`, `status`, `updated_at`) VALUES
-(13, 1, '2025-05-17 00:00:00', 'Standard', 4, 'asdasda', '2025-05-22 16:39:15', 'Pending', '2025-05-22 16:39:15'),
-(14, 1, '2025-05-24 00:00:00', 'Standard', 5, 'dapat daghan chix', '2025-05-22 16:40:58', 'Approved', '2025-05-22 16:56:37');
 
 -- --------------------------------------------------------
 
@@ -292,9 +232,8 @@ CREATE TABLE `tbl_users` (
 --
 
 INSERT INTO `tbl_users` (`u_id`, `u_fname`, `u_lname`, `u_username`, `u_type`, `u_password`, `u_phone`, `u_image`, `u_status`, `security_question`, `security_answer`, `created_at`) VALUES
-(72, 'gale', 'gale', 'gale', 'Admin', '0HISeHvz4EuJ12dG3swi70Gi9Vr6bXGA5Tm1KLbgxSo=', '09957342019', 'src/userimages/m1.jpg', 'Active', 'What is your favorite food?', 'gale', '2025-05-18 21:18:16'),
-(73, 'qwe', 'qwe', 'qwe', 'User', '0HISeHvz4EuJ12dG3swi70Gi9Vr6bXGA5Tm1KLbgxSo=', '09957342018', 'src/userimages/m2.jpg', 'Active', 'What is your favorite food?', 'qwe', '2025-05-18 21:18:16'),
-(81, 'Adolf', 'Adolf', 'adolf123', 'Admin', 'DNPZqMo10kNNVXdENYxfQft5bsZLUTguRef5I2b8BS4=', '09151391914', '', 'Active', '', '', '2025-05-22 17:51:13');
+(72, 'gale', 'gale', 'gale', 'Admin', '73l8gRjwLftklgfdXT+MdiMEjJwGPVMsyVxe16iYpk8=', '09957342019', 'src/userimages/m1.jpg', 'Active', 'What is your favorite food?', 'gale', '2025-05-18 21:18:16'),
+(73, 'qwe', 'qwe', 'qwe', 'User', 'DR6kwlbNUKKnzL/SKz2ZWfb9ML2EC5/zx8Ze5OId8G0=', '09957342018', 'src/userimages/m2.jpg', 'Active', 'What is your favorite food?', 'qwe', '2025-05-18 21:18:16');
 
 --
 -- Indexes for dumped tables
@@ -334,25 +273,25 @@ ALTER TABLE `tbl_users`
 -- AUTO_INCREMENT for table `cateringp`
 --
 ALTER TABLE `cateringp`
-  MODIFY `package_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `package_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `tbl_logs`
 --
 ALTER TABLE `tbl_logs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=711;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=762;
 
 --
 -- AUTO_INCREMENT for table `tbl_reservations`
 --
 ALTER TABLE `tbl_reservations`
-  MODIFY `reservation_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `reservation_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  MODIFY `u_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `u_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- Constraints for dumped tables

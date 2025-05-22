@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -69,52 +69,55 @@ public class accountDetails extends javax.swing.JFrame {
     public String oldpath;
     public String path;
 
-    public int FileExistenceChecker(String path) {
+   public int FileExistenceChecker(String path) {
         File file = new File(path);
-       String fileName = file.getName();
-       Path filePath = Paths.get("src/userimages", fileName);
-       boolean fileExists = Files.exists(filePath);
-       return fileExists ? 1 : 0;
+        String fileName = file.getName();
+
+        Path filePath = Paths.get("src/userimages", fileName);
+         boolean fileExists = Files.exists(filePath);
+
+        if (fileExists) {
+            return 1;
+        } else {
+            return 0;
+   }
    }
     
     public static int getHeightFromWidth(String imagePath, int desiredWidth) {
         try {
+            // Read the image file
             File imageFile = new File(imagePath);
-        if (!imageFile.exists()) {
-            System.out.println("Image file does not exist: " + imagePath);
-            return -1; // Return -1 if the file does not exist
+            BufferedImage image = ImageIO.read(imageFile);
+
+            // Get the original width and height of the image
+            int originalWidth = image.getWidth();
+            int originalHeight = image.getHeight();
+
+            // Calculate the new height based on the desired width and the aspect ratio
+            int newHeight = (int) ((double) desiredWidth / originalWidth * originalHeight);
+
+            return newHeight;
+        } catch (IOException ex) {
+            System.out.println("No image found");
         }
-        BufferedImage image = ImageIO.read(imageFile);
-        if (image == null) {
-            System.out.println("Failed to read image: " + imagePath);
-            return -1; // Return -1 if the image cannot be read
-        }
-        int originalWidth = image.getWidth();
-        int originalHeight = image.getHeight();
-        int newHeight = (int) ((double) desiredWidth / originalWidth * originalHeight);
-        return newHeight;
-    } catch (IOException ex) {
-        System.out.println("IOException occurred: " + ex.getMessage());
-    }
-    return -1; // Ensure this is handled properly
+
+        return -1;
 }
 
     public ImageIcon ResizeImage(String ImagePath, byte[] pic, JLabel label) {
          ImageIcon MyImage = null;
-    if (ImagePath != null) {
-        MyImage = new ImageIcon(ImagePath);
-    } else {
-        MyImage = new ImageIcon(pic);
-    }
-    int newHeight = getHeightFromWidth(ImagePath, label.getWidth());
-    if (newHeight == -1) {
-        System.out.println("Failed to get height from width for image: " + ImagePath);
-        return null; // Return null if resizing fails
-    }
-    Image img = MyImage.getImage();
-    Image newImg = img.getScaledInstance(label.getWidth(), newHeight, Image.SCALE_SMOOTH);
-    ImageIcon image = new ImageIcon(newImg);
-    return image;
+        if (ImagePath != null) {
+            MyImage = new ImageIcon(ImagePath);
+        } else {
+            MyImage = new ImageIcon(pic);
+        }
+
+        int newHeight = getHeightFromWidth(ImagePath, label.getWidth());
+
+        Image img = MyImage.getImage();
+        Image newImg = img.getScaledInstance(label.getWidth(), newHeight, Image.SCALE_SMOOTH);
+        ImageIcon image = new ImageIcon(newImg);
+        return image;
 }
 
     public void imageUpdater(String existingFilePath, String newFilePath) {
@@ -135,7 +138,7 @@ public class accountDetails extends javax.swing.JFrame {
             try {
                 Files.copy(selectedFile.toPath(), new File(destination).toPath(), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
-                System.out.println("Error on update");
+                System.out.println("Error on update!");
             }
         }
     }
@@ -459,69 +462,74 @@ public class accountDetails extends javax.swing.JFrame {
     }//GEN-LAST:event_FnameActionPerformed
 
     private void confirmMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmMouseClicked
-        dbConnect dbc = new dbConnect();
-        Session sess = Session.getInstance();
-        String fn = Fname.getText().trim();
-        String ln = Lname.getText().trim();
-        String p = phone.getText().trim();
-        String uname = MR_username.getText().trim();
-        dbConnect connector = new dbConnect();
-        int userId = 0;
-        String uname2 = null;
-        String sq = "";
-        String sa = "";
+       dbConnect dbc = new dbConnect();
+    Session sess = Session.getInstance();
+    dbConnect connector = new dbConnect();
+    int userId = 0;
+    String uname2 = null;
 
-        if(uname.isEmpty() || ln.isEmpty() || fn.isEmpty())
-        {
-            JOptionPane.showMessageDialog(null, "Please Fill All Boxes");
-        }else if(updateCheck())
-        {
-            System.out.println("Duplicate Exists");
-        }else
-        {
-            try {
-                    String query = "SELECT * FROM tbl_users WHERE u_id='" + sess.getUid() + "'";
-                    ResultSet rs = dbc.getData(query);
-                    if (rs.next()) 
-                    {
-                        String npass = rs.getString("u_password");
-                        String at = rs.getString("u_type");
-                        String s = rs.getString("u_status");
+    String fn = Fname.getText().trim();
+    String ln = Lname.getText().trim();
+    String p = phone.getText().trim();
+    String uname = MR_username.getText().trim();
+    String sq = ""; // add input fields if needed
+    String sa = "";
 
-                        if (dbc.insertData("INSERT INTO tbl_users (u_fname, u_lname, u_username, u_type, u_password, u_phone, u_status, u_image, security_question, security_answer) "
-                            + "VALUES ('" + fn + "', '" + ln + "', '" + uname + "', '" + at + "','" + npass + "', '" + p + "',  '" + s + "',  '" + destination + "',  '" + sq + "',  '" + sa + "')")) {
+    if (uname.isEmpty() || ln.isEmpty() || fn.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Please Fill All Boxes");
+    } else if (!p.matches("\\d+")) {
+        JOptionPane.showMessageDialog(null, "Phone Must Only Contain Numbers");
+    } else if (p.length() > 15 || p.length() < 11) {
+        JOptionPane.showMessageDialog(null, "Invalid Phone Number");
+    } else if (updateCheck()) {
+        System.out.println("Duplicate Exists");
+    } else {
+        try {
+            String query = "SELECT * FROM tbl_users WHERE u_id='" + sess.getUid() + "'";
+            ResultSet rs = dbc.getData(query);
+            if (rs.next()) {
+                String npass = rs.getString("u_password");
+                String at = rs.getString("u_type");
+                String s = rs.getString("u_status");
 
-                        try 
-                        {
-                            String query2 = "SELECT * FROM tbl_users WHERE u_id = '" + sess.getUid() + "'";
-                            PreparedStatement pstmt = connector.getConnection().prepareStatement(query2);
+                // Update DB with image path
+                dbc.updateData("UPDATE tbl_users SET u_fname = '" + fn + "', u_lname = '" + ln + "', u_username = '" + uname + "', "
+                    + "u_password = '" + npass + "', u_phone = '" + p + "', u_type = '" + at + "', u_status = '" + s + "', u_image = '" + destination + "' "
+                    + "WHERE u_id = '" + sess.getUid() + "'");
 
-                            ResultSet resultSet = pstmt.executeQuery();
-
-                            if (resultSet.next()) {
-                                userId = resultSet.getInt("u_id");   // Update the outer `userId` correctly
-                                uname2 = resultSet.getString("u_username");
-                            }
-                        } catch (SQLException ex) {
-                            System.out.println("SQL Exception: " + ex);
-                        }
-
-                        logEvent(userId, uname2, "User Changed Their Details");
-
-                        UserDashboard ud = new UserDashboard();
-                        ud.setVisible(true);
-                        this.dispose();
-
-                        }else
-                        {
-                            JOptionPane.showMessageDialog(null, "Unknown Error Occured");
-                            UserDashboard ed = new UserDashboard();
-                            ed.setVisible(true);
-                            this.dispose();
-                        }
+                // Copy or remove image
+                if (destination.isEmpty()) {
+                    File existingFile = new File(oldpath);
+                    if (existingFile.exists()) {
+                        existingFile.delete();
                     }
-                }catch (SQLException ex) {
-                System.out.println("" + ex);
+                } else {
+                    if (!oldpath.equals(path)) {
+                        imageUpdater(oldpath, path);
+                    }
+                }
+
+                try {
+                    String query2 = "SELECT * FROM tbl_users WHERE u_id = '" + sess.getUid() + "'";
+                    PreparedStatement pstmt = connector.getConnection().prepareStatement(query2);
+                    ResultSet resultSet = pstmt.executeQuery();
+
+                    if (resultSet.next()) {
+                        userId = resultSet.getInt("u_id");
+                        uname2 = resultSet.getString("u_username");
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("SQL Exception: " + ex);
+                }
+
+                logEvent(userId, uname2, "User Changed Their Details");
+
+                UserDashboard ud = new UserDashboard();
+                ud.setVisible(true);
+                this.dispose();
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQL Error: " + ex);
             }
         }
         
