@@ -40,10 +40,10 @@ public class u_reservations extends javax.swing.JFrame {
 
     // ====== CLEAR FORM AFTER SUBMIT ======
     private void clearForm() {
-        jDateChooser1.setDate(null);
-        jComboBox1.setSelectedIndex(0);
-        jSpinner1.setValue(1);
-        jTextArea1.setText("");
+        date.setDate(null);
+        catering.setSelectedIndex(0);
+        number.setValue(1);
+        request.setText("");
     }
 
     // ====== HANDLE SUBMIT BUTTON ======
@@ -64,14 +64,14 @@ public class u_reservations extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        date = new com.toedter.calendar.JDateChooser();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        catering = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        number = new javax.swing.JSpinner();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        request = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -90,7 +90,7 @@ public class u_reservations extends javax.swing.JFrame {
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 780, 60));
-        jPanel1.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 120, 210, -1));
+        jPanel1.add(date, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 120, 210, -1));
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -102,18 +102,18 @@ public class u_reservations extends javax.swing.JFrame {
         jLabel3.setText("Date & Time:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 110, 90, 30));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Standard", "Premium", "Deluxe" }));
-        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 180, 200, -1));
+        catering.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Standard", "Premium", "Deluxe" }));
+        jPanel1.add(catering, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 180, 200, -1));
 
         jLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Catering Package:");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 170, 130, 30));
-        jPanel1.add(jSpinner1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 240, 200, 30));
+        jPanel1.add(number, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 240, 200, 30));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        request.setColumns(20);
+        request.setRows(5);
+        jScrollPane1.setViewportView(request);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 310, 200, 50));
 
@@ -129,7 +129,7 @@ public class u_reservations extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 400, 80, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 430, 190, 40));
 
         jButton2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jButton2.setText("Submit");
@@ -138,7 +138,7 @@ public class u_reservations extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 400, -1, -1));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 380, 190, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -166,41 +166,64 @@ public class u_reservations extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Connection conn = connect();
-        if (conn == null) return;
+Connection conn = connect();
+if (conn == null) return;
 
-        try {
-            Date selectedDate = jDateChooser1.getDate();
-            String packageName = jComboBox1.getSelectedItem().toString();
-            int guests = (Integer) jSpinner1.getValue();
-            String requests = jTextArea1.getText();
+try {
+    Date selectedDate = date.getDate();
+    String packageName = catering.getSelectedItem().toString();
 
-            if (selectedDate == null || guests <= 0) {
-                JOptionPane.showMessageDialog(this, "Please fill out all fields correctly.");
-                return;
-            }
+    // Sa pagkuha sa guests value, safer casting
+    Object guestValue = number.getValue();
+    int guests = 0;
+    if (guestValue instanceof Integer) {
+        guests = (Integer) guestValue;
+    } else if (guestValue instanceof Number) {
+        guests = ((Number) guestValue).intValue();
+    } else {
+        JOptionPane.showMessageDialog(this, "Invalid guests number.");
+        return;
+    }
 
-            int userId = getCurrentUserId();
+    String requests = request.getText();
 
-            String sql = "INSERT INTO tbl_reservations (u_id, reservation_date, catering_package, number_of_guests, special_requests, status) VALUES (?, ?, ?, ?, ?, 'Pending')";
-            PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setInt(1, userId);
-            pst.setTimestamp(2, new java.sql.Timestamp(selectedDate.getTime()));
-            pst.setString(3, packageName);
-            pst.setInt(4, guests);
-            pst.setString(5, requests);
+    if (selectedDate == null || guests <= 0) {
+        JOptionPane.showMessageDialog(this, "Please fill out all fields correctly.");
+        return;
+    }
 
-            int rows = pst.executeUpdate();
-            if (rows > 0) {
-                JOptionPane.showMessageDialog(this, "Reservation successfully submitted!");
-                clearForm();
-            } else {
-                JOptionPane.showMessageDialog(this, "Failed to make reservation.");
-            }
+    int userId = getCurrentUserId();
 
-            conn.close();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+    // Debug prints
+    System.out.println("User ID: " + userId);
+    System.out.println("Reservation Date: " + selectedDate);
+    System.out.println("Package Name: " + packageName);
+    System.out.println("Number of Guests: " + guests);
+    System.out.println("Special Requests: " + requests);
+
+    String sql = "INSERT INTO tbl_reservations "
+               + "(u_id, reservation_date, catering_package, number_of_guests, special_requests, status) "
+               + "VALUES (?, ?, ?, ?, ?, 'Pending')";
+    PreparedStatement pst = conn.prepareStatement(sql);
+    pst.setInt(1, userId);
+    pst.setTimestamp(2, new java.sql.Timestamp(selectedDate.getTime()));
+    pst.setString(3, packageName);
+    pst.setInt(4, guests);
+    pst.setString(5, requests);
+
+    int rows = pst.executeUpdate();
+    if (rows > 0) {
+        JOptionPane.showMessageDialog(this, "Reservation successfully submitted!");
+        clearForm();
+    } else {
+        JOptionPane.showMessageDialog(this, "Failed to make reservation.");
+    }
+
+    conn.close();
+} catch (Exception ex) {
+    JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+
+
     }//GEN-LAST:event_jButton2ActionPerformed
     }
     /**
@@ -239,10 +262,10 @@ public class u_reservations extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> catering;
+    private com.toedter.calendar.JDateChooser date;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -251,7 +274,7 @@ public class u_reservations extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JSpinner number;
+    private javax.swing.JTextArea request;
     // End of variables declaration//GEN-END:variables
 }

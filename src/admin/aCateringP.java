@@ -5,6 +5,19 @@
  */
 package admin;
 
+import config.dbConnect;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import net.proteanit.sql.DbUtils;
+
 /**
  *
  * @author Janjan
@@ -16,7 +29,37 @@ public class aCateringP extends javax.swing.JFrame {
      */
     public aCateringP() {
         initComponents();
+        Connect();
+        displayData();
+        
     }
+    Connection con;
+    PreparedStatement pst;
+     public void displayData()
+    {
+        try
+        {
+            dbConnect dbc = new dbConnect();
+            ResultSet rs = dbc.getData("SELECT * FROM cateringp");
+            table.setModel(DbUtils.resultSetToTableModel(rs));
+            rs.close();
+        }catch(SQLException ex)
+        {
+            System.out.println("Errors: "+ex.getMessage());
+        }
+    }
+        public void Connect(){
+            
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con =DriverManager.getConnection("jdbc:mysql://localhost:3306/cateringdb", "root", "");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(aCateringP.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(aCateringP.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,10 +75,18 @@ public class aCateringP extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        table = new javax.swing.JTable();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        delete = new javax.swing.JButton();
+        add = new javax.swing.JButton();
+        price = new javax.swing.JTextField();
+        id = new javax.swing.JTextField();
+        name = new javax.swing.JTextField();
+        des = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -50,7 +101,7 @@ public class aCateringP extends javax.swing.JFrame {
         jLabel1.setText("Manage Catering Packages");
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 780, 60));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 920, 60));
 
         jButton1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jButton1.setText("Back");
@@ -59,9 +110,9 @@ public class aCateringP extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 410, 90, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 570, 120, 50));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -69,53 +120,60 @@ public class aCateringP extends javax.swing.JFrame {
                 "Package ID", "Package Name", "Description", "Price", "Actions"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(table);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 140, 430, 220));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 90, 490, 450));
 
-        jButton2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jButton2.setText("Add New Package");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setText("Package ID :");
+        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
+
+        jLabel3.setText("Package Name :");
+        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, -1, -1));
+
+        jLabel4.setText("Description :");
+        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, -1, -1));
+
+        jLabel5.setText("Price :");
+        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, -1, -1));
+
+        delete.setText("DELETE");
+        delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                deleteActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 160, 160, 40));
+        jPanel3.add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 400, 230, 40));
 
-        jButton3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jButton3.setText("Update Package");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        add.setText("ADD ");
+        add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                addActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 230, 160, 40));
+        jPanel3.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 330, 230, 50));
+        jPanel3.add(price, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 260, 240, 40));
 
-        jButton4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jButton4.setText("Cancel");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 300, 160, 40));
+        id.setEnabled(false);
+        jPanel3.add(id, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, 240, 40));
+        jPanel3.add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 80, 240, 40));
+        jPanel3.add(des, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 140, 240, 100));
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 390, 450));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 930, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 648, Short.MAX_VALUE)
         );
 
-        setSize(new java.awt.Dimension(796, 559));
+        setSize(new java.awt.Dimension(952, 704));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -125,17 +183,82 @@ public class aCateringP extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
+String packageName = name.getText().trim();
+String description = des.getText().trim();
+String priceText = price.getText().trim();
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+if (packageName.isEmpty() || description.isEmpty() || priceText.isEmpty()) {
+    JOptionPane.showMessageDialog(this, "Please fill in all required fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+double price;
+try {
+    price = Double.parseDouble(priceText);
+} catch (NumberFormatException e) {
+    JOptionPane.showMessageDialog(this, "Invalid price format.", "Input Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+
+String url = "jdbc:mysql://localhost:3306/cateringdb";
+String username = "root";
+String password = "";
+
+// Updated SQL: includes user_id
+String sql = "INSERT INTO cateringp (package_name, description, price, u_id, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())";
+
+try (Connection conn = DriverManager.getConnection(url, username, password);
+     PreparedStatement pst = conn.prepareStatement(sql)) {
+
+    pst.setString(1, packageName);
+    pst.setString(2, description);
+    pst.setDouble(3, price);
+
+    int userId = LogUser.getUserId(); // current logged-in user ID
+    pst.setInt(4, userId);
+
+    int inserted = pst.executeUpdate();
+    if (inserted > 0) {
+        JOptionPane.showMessageDialog(this, "Package added successfully.");
+        
+    } else {
+        JOptionPane.showMessageDialog(this, "Failed to add package.", "Insert Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+} catch (SQLException ex) {
+    JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+}
+
+    }//GEN-LAST:event_addActionPerformed
+
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+        int row = table.getSelectedRow();
+if (row == -1) {
+    JOptionPane.showMessageDialog(null, "Please select a package to delete.");
+    return;
+}
+
+int packageId = (int) table.getValueAt(row, 0); // assuming package_id is in column 0
+
+try {
+    Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cateringdb", "root", "");
+    String sql = "DELETE FROM cateringp WHERE package_id = ?";
+    PreparedStatement pstmt = conn.prepareStatement(sql);
+    pstmt.setInt(1, packageId);
+    int deleted = pstmt.executeUpdate();
+    conn.close();
+
+    if (deleted > 0) {
+        JOptionPane.showMessageDialog(null, "Package deleted successfully.");
+    } else {
+        JOptionPane.showMessageDialog(null, "Failed to delete package.");
+    }
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(null, "Error deleting package: " + e.getMessage());
+}
+
+    }//GEN-LAST:event_deleteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -173,14 +296,22 @@ public class aCateringP extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton add;
+    private javax.swing.JButton delete;
+    private javax.swing.JTextField des;
+    private javax.swing.JTextField id;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField name;
+    private javax.swing.JTextField price;
+    private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }

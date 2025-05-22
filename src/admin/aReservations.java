@@ -5,6 +5,16 @@
  */
 package admin;
 
+import config.PDFExporter;
+import config.dbConnect;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import net.proteanit.sql.DbUtils;
+
 /**
  *
  * 
@@ -16,7 +26,92 @@ public class aReservations extends javax.swing.JFrame {
      */
     public aReservations() {
         initComponents();
+        displayData();
     }
+    
+    
+    
+ public void displayData()
+    {
+        try
+        {
+            dbConnect dbc = new dbConnect();
+            ResultSet rs = dbc.getData("SELECT * FROM tbl_reservations");
+            table.setModel(DbUtils.resultSetToTableModel(rs));
+            rs.close();
+        }catch(SQLException ex)
+        {
+            System.out.println("Errors: "+ex.getMessage());
+        }
+    }
+ private Connection connect() {
+    try {
+        // MySQL 8+ driver class name
+        Class.forName("com.mysql.cj.jdbc.Driver");
+
+        String url = "jdbc:mysql://localhost:3306/cateringdb";
+        String user = "root";
+        String password = ""; // your password here
+
+        return DriverManager.getConnection(url, user, password);
+
+    } catch (ClassNotFoundException e) {
+        JOptionPane.showMessageDialog(null, "MySQL JDBC Driver not found: " + e.getMessage());
+        return null;
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Failed to connect to database: " + e.getMessage());
+        return null;
+    }
+}
+
+ 
+ private void approveSelectedReservation() {
+    int selectedRow = table.getSelectedRow();
+
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Please select a reservation to approve.");
+        return;
+    }
+
+    // Assuming reservation_id is in column 0; change index if needed
+    Object reservationIdObj = table.getValueAt(selectedRow, 0);
+    if (reservationIdObj == null) {
+        JOptionPane.showMessageDialog(this, "Selected reservation ID is invalid.");
+        return;
+    }
+
+    int reservationId;
+    try {
+        reservationId = Integer.parseInt(reservationIdObj.toString());
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Invalid reservation ID format.");
+        return;
+    }
+
+    Connection conn = connect();
+    if (conn == null) return;
+
+    String sql = "UPDATE tbl_reservations SET status = 'Approved' WHERE reservation_id = ?";
+
+    try (PreparedStatement pst = conn.prepareStatement(sql)) {
+        pst.setInt(1, reservationId);
+
+        int updatedRows = pst.executeUpdate();
+        if (updatedRows > 0) {
+            JOptionPane.showMessageDialog(this, "Reservation approved successfully.");
+
+            // Optionally refresh your table model here to reflect changes:
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to approve reservation.");
+        }
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Database error: " + ex.getMessage());
+    } finally {
+        try { conn.close(); } catch (SQLException e) { /* ignore */ }
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -31,11 +126,10 @@ public class aReservations extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
+        update = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,7 +146,7 @@ public class aReservations extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 780, 60));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -60,9 +154,9 @@ public class aReservations extends javax.swing.JFrame {
                 "Reservation ID", "Customer Name", "Date & Time", "Number of Guests", "Status", "Special Requests", "Actions"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(table);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, 690, 310));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 730, 310));
 
         jButton1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jButton1.setText("Back");
@@ -71,34 +165,24 @@ public class aReservations extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 430, 90, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 450, 110, 30));
 
-        jButton2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jButton2.setText("Update");
+        update.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        update.setText("Approved");
+        update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateActionPerformed(evt);
+            }
+        });
+        jPanel1.add(update, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 400, 110, 30));
+
+        jButton2.setText("Print");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 430, 90, -1));
-
-        jButton3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jButton3.setText("Cancel");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 430, 90, -1));
-
-        jButton4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jButton4.setText("Delete");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 430, 90, -1));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 410, 100, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -125,17 +209,42 @@ public class aReservations extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+        int row = table.getSelectedRow();
+if (row == -1) {
+    JOptionPane.showMessageDialog(null, "Please select a reservation to approve.");
+    return;
+}
+
+int reservationId = (int) table.getValueAt(row, 0); // assuming reservation_id is in column 0
+
+try {
+    Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cateringdb", "root", "");
+    String sql = "UPDATE tbl_reservations SET status = 'Approved' WHERE reservation_id = ?";
+    PreparedStatement pstmt = conn.prepareStatement(sql);
+    pstmt.setInt(1, reservationId);
+    pstmt.executeUpdate();
+    conn.close();
+
+    JOptionPane.showMessageDialog(null, "Reservation approved successfully.");
+
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(null, "Error approving reservation: " + e.getMessage());
+}
+
+    }//GEN-LAST:event_updateActionPerformed
+
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+       int[] selectedRows = table.getSelectedRows();
+
+    if (selectedRows.length == 0) {
+        JOptionPane.showMessageDialog(this, "Please select one or more rows to export.", "No Selection", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    // Call the PDF exporter
+    PDFExporter.exportSelectedRowsToPDF(table, selectedRows);
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -175,12 +284,11 @@ public class aReservations extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable table;
+    private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
 }

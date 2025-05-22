@@ -282,7 +282,9 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_passwordMLActionPerformed
 
     private void MR_clickhereMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MR_clickhereMouseClicked
-
+Registration rs = new Registration();
+rs.setVisible(true);
+this.dispose();
     }//GEN-LAST:event_MR_clickhereMouseClicked
 
     private void usernameMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameMLActionPerformed
