@@ -271,7 +271,7 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("Packges");
+        jLabel9.setText("Packages");
         users5.add(jLabel9);
         jLabel9.setBounds(0, 80, 100, 20);
 

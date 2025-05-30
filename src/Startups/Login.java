@@ -336,10 +336,10 @@ this.dispose();
                     AdminDashboard ad = new AdminDashboard();
                     ad.setVisible(true);
                     this.dispose();
-                } else if (type.equals("User")) 
+                } else if (type.equals("Customer")) 
                 {
                     
-                    logEvent(userId, uname, "Logged as User");
+                    logEvent(userId, uname, "Logged as Customer");
                     JOptionPane.showMessageDialog(null, "Login Successfully");
 
                     UserDashboard ed = new UserDashboard();

@@ -9,6 +9,7 @@ import com.toedter.calendar.JDateChooser;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -21,7 +22,27 @@ public class u_reservations extends javax.swing.JFrame {
      */
     public u_reservations() {
         initComponents();
+        loadCateringPackages();
     }
+    
+    private void loadCateringPackages() {
+    Connection conn = connect();
+    if (conn == null) return;
+
+    String sql = "SELECT package_name FROM cateringp";
+    try (PreparedStatement pst = conn.prepareStatement(sql);
+         ResultSet rs = pst.executeQuery()) {
+
+        catering.removeAllItems(); // Clear old items
+        while (rs.next()) {
+            catering.addItem(rs.getString("package_name"));
+        }
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Failed to load catering packages: " + ex.getMessage());
+    }
+}
+
     
     // ====== CONNECT TO DATABASE ======
     private Connection connect() {

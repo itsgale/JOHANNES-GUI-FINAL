@@ -46,12 +46,11 @@ public class aReservations extends javax.swing.JFrame {
     }
  private Connection connect() {
     try {
-        // MySQL 8+ driver class name
-        Class.forName("com.mysql.cj.jdbc.Driver");
+        Class.forName("com.mysql.jdbc.Driver");
 
         String url = "jdbc:mysql://localhost:3306/cateringdb";
         String user = "root";
-        String password = ""; // your password here
+        String password = ""; // Update if you have a password
 
         return DriverManager.getConnection(url, user, password);
 
@@ -129,12 +128,15 @@ public class aReservations extends javax.swing.JFrame {
         table = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         update = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        print = new javax.swing.JButton();
+        delete = new javax.swing.JButton();
+        refresh = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
-        jPanel1.setPreferredSize(new java.awt.Dimension(780, 520));
+        jPanel1.setMinimumSize(new java.awt.Dimension(1000, 550));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1000, 550));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -144,19 +146,19 @@ public class aReservations extends javax.swing.JFrame {
         jLabel1.setText("Manage Reservations");
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 780, 60));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 60));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Reservation ID", "Customer Name", "Date & Time", "Number of Guests", "Status", "Special Requests", "Actions"
+
             }
         ));
         jScrollPane1.setViewportView(table);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 730, 310));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 1000, 320));
 
         jButton1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jButton1.setText("Back");
@@ -165,7 +167,7 @@ public class aReservations extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 450, 110, 30));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 460, 110, 30));
 
         update.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         update.setText("Approved");
@@ -174,32 +176,46 @@ public class aReservations extends javax.swing.JFrame {
                 updateActionPerformed(evt);
             }
         });
-        jPanel1.add(update, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 400, 110, 30));
+        jPanel1.add(update, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 410, 110, 30));
 
-        jButton2.setText("Print");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        print.setText("Print");
+        print.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                printActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 410, 100, 30));
+        jPanel1.add(print, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 410, 100, 30));
+
+        delete.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        delete.setText("Delete");
+        delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteActionPerformed(evt);
+            }
+        });
+        jPanel1.add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 410, 110, 30));
+
+        refresh.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        refresh.setText("Refresh");
+        refresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshActionPerformed(evt);
+            }
+        });
+        jPanel1.add(refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 460, 110, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        setSize(new java.awt.Dimension(796, 559));
+        setSize(new java.awt.Dimension(1016, 559));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -234,7 +250,7 @@ try {
 
     }//GEN-LAST:event_updateActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printActionPerformed
        int[] selectedRows = table.getSelectedRows();
 
     if (selectedRows.length == 0) {
@@ -244,7 +260,67 @@ try {
 
     // Call the PDF exporter
     PDFExporter.exportSelectedRowsToPDF(table, selectedRows);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_printActionPerformed
+
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+        int selectedRow = table.getSelectedRow();
+
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Please select a reservation to delete.", "No Selection", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this reservation?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+
+    if (confirm != JOptionPane.YES_OPTION) {
+        return;
+    }
+
+    // Assuming reservation_id is in the first column (index 0)
+    Object reservationIdObj = table.getValueAt(selectedRow, 0);
+
+    if (reservationIdObj == null) {
+        JOptionPane.showMessageDialog(this, "Invalid reservation ID.");
+        return;
+    }
+
+    int reservationId;
+    try {
+        reservationId = Integer.parseInt(reservationIdObj.toString());
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Invalid reservation ID format.");
+        return;
+    }
+
+    Connection conn = connect();
+    if (conn == null) return;
+
+    String sql = "DELETE FROM tbl_reservations WHERE reservation_id = ?";
+
+    try (PreparedStatement pst = conn.prepareStatement(sql)) {
+        pst.setInt(1, reservationId);
+        int affectedRows = pst.executeUpdate();
+
+        if (affectedRows > 0) {
+            JOptionPane.showMessageDialog(this, "Reservation deleted successfully.");
+            displayData(); // Refresh the table
+        } else {
+            JOptionPane.showMessageDialog(this, "Reservation could not be deleted.");
+        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Database error: " + ex.getMessage());
+    } finally {
+        try {
+            conn.close();
+        } catch (SQLException ex) {
+            // Ignore
+        }
+    }
+    }//GEN-LAST:event_deleteActionPerformed
+
+    private void refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshActionPerformed
+        displayData();
+    }//GEN-LAST:event_refreshActionPerformed
 
     /**
      * @param args the command line arguments
@@ -282,12 +358,14 @@ try {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton delete;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton print;
+    private javax.swing.JButton refresh;
     private javax.swing.JTable table;
     private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables

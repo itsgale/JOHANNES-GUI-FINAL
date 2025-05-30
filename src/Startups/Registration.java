@@ -225,7 +225,7 @@ public class Registration extends javax.swing.JFrame {
         });
         New_Manager.add(PhoneNum, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 340, 260, 30));
 
-        type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "User", "Admin" }));
+        type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Customer", "Admin" }));
         type.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 typeActionPerformed(evt);
