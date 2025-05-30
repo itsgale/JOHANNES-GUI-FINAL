@@ -1,0 +1,19 @@
+[Login Page] --- (Register / Forgot Password)
+     |
+     V
+ [User Role Check]
+     |
+     |---> [Admin Dashboard]
+     |         |--> User Details (CRUD + Image)
+     |         |--> Change Password
+     |         |--> Add Pass Recovery
+     |         |--> Logs
+     |         |--> Manage Reservations (Approve/Delete/Print)
+     |         |--> Manage Catering Packages
+     |
+     |---> [Customer Dashboard]
+               |--> Account Details (Edit + Image)
+               |--> Change Password
+               |--> Add Pass Recovery
+               |--> Make Reservation
+               |--> My Reservations (View/Print)
